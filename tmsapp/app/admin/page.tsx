@@ -8,6 +8,7 @@ import {
 import DateRangeSelector from '../components/admin/DateRangeSelector';
 import CustomDatePicker from '../components/admin/CustomDatePicker';
 import LoadingSpinner from '../components/admin/LoadingSpinner';
+import TicketDetailModal from '../components/admin/TicketDetailModal';
 
 const ticketData = [
   { name: 'Mon', tickets: 40 },
@@ -49,6 +50,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1234',
     title: 'System access issue with main database',
+    description: 'Unable to connect to the main database server. Getting timeout errors when attempting to query data.',
     status: 'In Progress',
     priority: 'High',
     created: '2h ago',
@@ -59,6 +61,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1235',
     title: 'Billing discrepancy in monthly invoice',
+    description: 'There is a discrepancy in the monthly invoice. The total amount charged does not match the expected amount.',
     status: 'Open',
     priority: 'Medium',
     created: '4h ago',
@@ -69,6 +72,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1236',
     title: 'Password reset request for admin portal',
+    description: 'Password reset request for the admin portal. The user needs to reset their password.',
     status: 'Resolved',
     priority: 'Low',
     created: '1d ago',
@@ -79,6 +83,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1237',
     title: 'Critical service outage in production environment',
+    description: 'There is a critical service outage in the production environment. The service is down and users are unable to access the system.',
     status: 'Open',
     priority: 'Critical',
     created: '1h ago',
@@ -89,6 +94,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1238',
     title: 'Feature request: Add export functionality',
+    description: 'Feature request to add export functionality to the system. The user needs to be able to export data from the system.',
     status: 'In Progress',
     priority: 'Medium',
     created: '3d ago',
@@ -99,6 +105,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1239',
     title: 'API integration failing with timeout errors',
+    description: 'API integration is failing with timeout errors. The API is not responding as expected.',
     status: 'Open',
     priority: 'High',
     created: '5h ago',
@@ -109,6 +116,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1240',
     title: 'Security vulnerability report',
+    description: 'Security vulnerability report. There is a security vulnerability in the system. The vulnerability needs to be addressed.',
     status: 'Critical',
     priority: 'Critical',
     created: '30m ago',
@@ -119,6 +127,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1241',
     title: 'User permissions not updating correctly',
+    description: 'User permissions are not updating correctly. The user needs to update their permissions.',
     status: 'In Progress',
     priority: 'High',
     created: '6h ago',
@@ -129,6 +138,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1242',
     title: 'Data synchronization lag in reporting',
+    description: 'Data synchronization lag in reporting. The data is not being synchronized correctly in the reporting system.',
     status: 'Open',
     priority: 'Medium',
     created: '2d ago',
@@ -139,6 +149,7 @@ const sampleTickets: Ticket[] = [
   {
     id: '#1243',
     title: 'Mobile app crash report',
+    description: 'Mobile app crash report. The mobile app is crashing. The issue needs to be addressed.',
     status: 'Open',
     priority: 'High',
     created: '3h ago',
@@ -182,6 +193,8 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [isChartLoading, setIsChartLoading] = useState(true);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -264,6 +277,17 @@ export default function AdminDashboard() {
       );
     }
     return null;
+  };
+
+  const handleTicketUpdate = (updatedTicket: Ticket) => {
+    // TODO: Implement API call to update ticket
+    console.log('Updating ticket:', updatedTicket);
+    
+    // Update the local state
+    const updatedTickets = sampleTickets.map(ticket => 
+      ticket.id === updatedTicket.id ? updatedTicket : ticket
+    );
+    // You would typically update this through a proper state management solution
   };
 
   return (
@@ -625,7 +649,15 @@ export default function AdminDashboard() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{ticket.created}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">{ticket.lastUpdated}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <button className="text-blue-400 hover:text-blue-300">View Details</button>
+                    <button 
+                      className="text-blue-400 hover:text-blue-300"
+                      onClick={() => {
+                        setSelectedTicket(ticket);
+                        setIsTicketModalOpen(true);
+                      }}
+                    >
+                      View Details
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -697,6 +729,17 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+      {selectedTicket && (
+        <TicketDetailModal
+          ticket={selectedTicket}
+          isOpen={isTicketModalOpen}
+          onClose={() => {
+            setIsTicketModalOpen(false);
+            setSelectedTicket(null);
+          }}
+          onUpdate={handleTicketUpdate}
+        />
+      )}
     </div>
   );
 } 
