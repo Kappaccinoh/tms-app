@@ -309,7 +309,7 @@ export default function AdminDashboard() {
             <div>
               <p className="text-gray-400 text-sm">Active Users</p>
               <p className="text-2xl font-bold text-white mt-2">147</p>
-              <p className="text-red-400 text-sm mt-2">↑ 8% from last week</p>
+              <p className="text-green-400 text-sm mt-2">↑ 8% from last week</p>
             </div>
             <span className="text-green-400 text-2xl">👥</span>
           </div>
