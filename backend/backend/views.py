@@ -3,7 +3,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import (
     User, Ticket, TicketAttachment, TicketComment, 
-    TicketHistory, Report, AnalyticsData, Notification
+    TicketHistory, Report, AnalyticsData, Notification,
+    DashboardMetrics, TicketMetrics, CategoryDistribution,
+    PriorityMetrics, ImpactMetrics, HourlyTicketCount,
+    RecurringPattern
 )
 from .serializers import (
     UserSerializer, TicketSerializer, TicketAttachmentSerializer,
