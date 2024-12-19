@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function AdminLayout({
   children,
@@ -9,6 +9,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    // TODO: Add actual sign out logic here
+    router.push('/');
+  };
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -51,7 +57,12 @@ export default function AdminLayout({
           </div>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-300">Admin Console</span>
-            <button className="text-sm text-gray-400 hover:text-white">Sign Out</button>
+            <button 
+              onClick={handleSignOut}
+              className="text-sm text-gray-400 hover:text-white px-3 py-2 rounded-md hover:bg-gray-700 transition-colors"
+            >
+              Sign Out
+            </button>
           </div>
         </div>
       </nav>
